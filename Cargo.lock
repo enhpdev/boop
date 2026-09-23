@@ -545,10 +545,16 @@ dependencies = [
 [[package]]
 name = "boop-bin-client-desktop"
 version = "0.1.0"
+dependencies = [
+ "boop-app",
+]
 
 [[package]]
 name = "boop-bin-client-mobile-ios"
 version = "0.1.0"
+dependencies = [
+ "boop-app",
+]
 
 [[package]]
 name = "boop-common"

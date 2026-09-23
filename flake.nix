@@ -86,6 +86,20 @@
             '';
           };
 
+          # The iOS 27 SDK's .tbd stubs declare the arm64e.x1 arch, which LLVM 19's
+          # TAPI reader rejects outright ("unknown architecture"), breaking every
+          # link against the SDK. Strip it -- plain arm64 still resolves fine
+          # against the remaining arm64e stubs, which is how real iOS apps link.
+          iosSdkPatched = pkgs.runCommand "iPhoneOS27.0-patched.sdk" { } ''
+            cp -a ${iosSdk} $out
+            chmod -R u+w $out
+            grep -rl 'arm64e\.x1' $out --include='*.tbd' \
+              | xargs -r sed -i \
+                  -e 's/, arm64e\.x1-ios//g' \
+                  -e 's/arm64e\.x1-ios, //g' \
+                  -e 's/arm64e\.x1-ios//g'
+          '';
+
           iosPackages = [
             llvm.clang-unwrapped
             llvm.lld 
@@ -93,7 +107,7 @@
             pkgs.rcodesign
             pkgs.zip
             pkgs.unzip
-            iosSdk
+            iosSdkPatched
           ];
 
           androidPackages = with pkgs; [
@@ -108,7 +122,7 @@
           '';
 
           iosHook = ''
-            export SDKROOT="''${BOOP_IOS_SDK:-${iosSdk}}"
+            export SDKROOT="''${BOOP_IOS_SDK:-${iosSdkPatched}}"
             export IPHONEOS_DEPLOYMENT_TARGET=15.0
 
             if [ ! -d "$SDKROOT" ]; then
