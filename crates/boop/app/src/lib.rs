@@ -2,6 +2,9 @@ use std::{cell::RefCell, rc::Rc};
 
 slint::include_modules!();
 
+/// Re-exported so entry-point crates need no direct Slint dependency.
+pub use slint::PlatformError;
+
 
 
 pub struct RootViewModel {
@@ -49,6 +52,9 @@ impl RootView {
     fn sync(view: &AppWindow, vm: &RootViewModel) {
         view.set_counter(vm.counter());
         view.set_fizzbuzz(vm.fizzbuzz().into());
+    }
+    pub fn window(&self) -> &AppWindow {
+        &self.view
     }
     pub fn run(&self) -> Result<(), slint::PlatformError> {
         self.view.run()
