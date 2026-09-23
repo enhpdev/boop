@@ -24,4 +24,7 @@ impl MyAwesomeSharedStructure {
             String::from("")
         }
     }
+    pub fn value(&self) -> i32 {
+        self.internal
+    }
 }
