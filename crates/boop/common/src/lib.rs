@@ -14,7 +14,9 @@ impl MyAwesomeSharedStructure {
         self.internal -= by;
     }
     pub fn fizzbuzz(&self) -> String {
-        if (self.internal % 3) == 0 && (self.internal % 5) == 0 {
+        if self.internal == 0 {
+            String::from("")
+        } else if (self.internal % 3) == 0 && (self.internal % 5) == 0 {
             String::from("FizzBuzz!")
         } else if self.internal % 5 == 0 {
             String::from("Buzz!")
