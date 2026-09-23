@@ -1,16 +1,16 @@
 
 pub struct MyAwesomeSharedStructure {
-  internal: i64
+  internal: i32
 }
 
 impl MyAwesomeSharedStructure {
-    pub fn new(start: i64) -> Self {
+    pub fn new(start: i32) -> Self {
         Self { internal: start }
     }
-    pub fn increment(&mut self, by: i64) {
+    pub fn increment(&mut self, by: i32) {
         self.internal += by;
     }
-    pub fn decrement(&mut self, by: i64) {
+    pub fn decrement(&mut self, by: i32) {
         self.internal -= by;
     }
     pub fn fizzbuzz(&self) -> String {
