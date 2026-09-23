@@ -28,3 +28,10 @@ boop-runtime-platform-desktop = { path = "crates/boop/platform/desktop" }
 # boop-runtime-platform-mobile-android = { path = "crates/boop/platform/mobile/android" }
 boop-runtime-platform-mobile-ios = { path = "crates/boop/platform/mobile/ios" }
 
+slint = "1.18.1"
+slint-build = "1.18.1"
+tokio = { version = "1", features = ["full"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
