@@ -1,0 +1,30 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/boop/common",
+    "crates/boop/app",
+    # "crates/boop/runtime/server",
+    "crates/boop/runtime/client",
+    "crates/boop/platform/core",
+    "crates/boop/platform/desktop",
+    # "crates/boop/platform/mobile/android",
+    "crates/boop/platform/mobile/ios",
+    # "crates/boop/bin/server",
+    "crates/boop/bin/client/desktop",
+    # "crates/boop/bin/client/mobile/android",
+    "crates/boop/bin/client/mobile/ios",
+]
+
+[workspace.dependencies]
+
+# workspace members
+
+boop-common = { path = "crates/boop/common" }
+boop-app = { path = "crates/boop/app" }
+# boop-runtime-server = { path = "crates/boop/runtime/server" }
+boop-runtime-client = { path = "crates/boop/runtime/client" }
+boop-runtime-platform-core = { path = "crates/boop/platform/core" }
+boop-runtime-platform-desktop = { path = "crates/boop/platform/desktop" }
+# boop-runtime-platform-mobile-android = { path = "crates/boop/platform/mobile/android" }
+boop-runtime-platform-mobile-ios = { path = "crates/boop/platform/mobile/ios" }
+
