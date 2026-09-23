@@ -1,0 +1,32 @@
+import { Button, VerticalBox } from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in property <int> counter: 0;
+    in property <string> fizzbuzz: "";
+    callback increment;
+    callback decrement;
+    VerticalBox {
+        Text {
+            text: "Hello World!";
+        }
+        Text {
+            text: fizzbuzz;
+        }
+        Text {
+            text: "Counter: \{root.counter}";
+        }
+
+        Button {
+            text: "+";
+            clicked => {
+                root.increment();
+            }
+        }
+        Button {
+            text: "-";
+            clicked => {
+                root.decrement();
+            }
+        }
+    }
+}

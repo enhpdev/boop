@@ -1,14 +1,56 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
+use std::{cell::RefCell, rc::Rc};
+
+slint::include_modules!();
+
+
+
+pub struct RootViewModel {
+    shared: boop_common::MyAwesomeSharedStructure
+}
+impl RootViewModel {
+    pub fn new() -> Self {
+        Self {
+            shared: boop_common::MyAwesomeSharedStructure::new(0)
+        }
+    }
+    pub fn increment(&mut self) { self.shared.increment(1); }
+    pub fn decrement(&mut self) { self.shared.decrement(1); }
+
+    pub fn counter(&self) -> i32 { self.shared.value() }
+    pub fn fizzbuzz(&self) -> String { self.shared.fizzbuzz() }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub struct RootView {
+    view: AppWindow,
+    vm: Rc<RefCell<RootViewModel>>
+}
+impl RootView {
+    pub fn new() -> Result<Self, slint::PlatformError> {
+        let view = AppWindow::new()?;
+        let vm = Rc::new(RefCell::new(RootViewModel::new()));
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+        // a little bit of a hacky solution to keep from dangling AppWindow references
+        let bind = |f: fn(&mut RootViewModel)| {
+            let weak = view.as_weak();
+            let vm = Rc::clone(&vm);
+            move || {
+                f(&mut vm.borrow_mut());
+                if let Some(v) = weak.upgrade() {
+                    Self::sync(&v, &vm.borrow());
+                }
+            }
+        };
+
+        view.on_increment(bind(RootViewModel::increment));
+        view.on_decrement(bind(RootViewModel::decrement));
+        Self::sync(&view, &vm.borrow());
+        Ok(Self { view, vm })
+    }
+    fn sync(view: &AppWindow, vm: &RootViewModel) {
+        view.set_counter(vm.counter());
+        view.set_fizzbuzz(vm.fizzbuzz().into());
+    }
+    pub fn run(&self) -> Result<(), slint::PlatformError> {
+        self.view.run()
     }
 }
