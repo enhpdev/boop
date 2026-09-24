@@ -38,7 +38,7 @@
           };
 
           androidComposition = pkgs.androidenv.composeAndroidPackages {
-            platformVersions = [ "35" ];
+            platformVersions = [ androidTargetApi ];
             buildToolsVersions = [ "35.0.0" ];
             includeNDK = true;
             ndkVersions = [ "27.2.12479018" ];
@@ -47,6 +47,7 @@
           };
           androidSdk = androidComposition.androidsdk;
           androidMinApi = "26";
+          androidTargetApi = "35";
 
           desktopRuntimeLibs = with pkgs; [
             libGL
@@ -86,10 +87,6 @@
             '';
           };
 
-          # The iOS 27 SDK's .tbd stubs declare the arm64e.x1 arch, which LLVM 19's
-          # TAPI reader rejects outright ("unknown architecture"), breaking every
-          # link against the SDK. Strip it -- plain arm64 still resolves fine
-          # against the remaining arm64e stubs, which is how real iOS apps link.
           iosSdkPatched = pkgs.runCommand "iPhoneOS27.0-patched.sdk" { } ''
             cp -a ${iosSdk} $out
             chmod -R u+w $out
@@ -114,7 +111,6 @@
             androidSdk
             cargo-ndk
             jdk17_headless 
-            smali
           ];
 
           desktopHook = ''
@@ -147,6 +143,11 @@
             export ANDROID_NDK_HOME="$(echo "$ANDROID_HOME"/ndk/* | head -n1)"
             export ANDROID_NDK_ROOT="$ANDROID_NDK_HOME"
             export BOOP_ANDROID_MIN_API=${androidMinApi}
+            export BOOP_ANDROID_TARGET_API=${androidTargetApi}
+
+            # fix niche bug where cargo-ndk emits min-sdk in a way slint's android
+            # build reads as target-sdk by explicitly setting ANDROID_JAR location
+            export ANDROID_JAR="$ANDROID_HOME/platforms/android-${androidTargetApi}/android.jar"
 
             export BOOP_ANDROID_BUILD_TOOLS="$(echo "$ANDROID_HOME"/build-tools/* | head -n1)"
 

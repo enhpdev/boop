@@ -1,0 +1,12 @@
+[package]
+name = "boop-bin-client-mobile-android"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "boop"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+boop-app.workspace = true

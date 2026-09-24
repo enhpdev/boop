@@ -11,7 +11,7 @@ members = [
     "crates/boop/platform/mobile/ios",
     # "crates/boop/bin/server",
     "crates/boop/bin/client/desktop",
-    # "crates/boop/bin/client/mobile/android",
+    "crates/boop/bin/client/mobile/android",
     "crates/boop/bin/client/mobile/ios",
 ]
 

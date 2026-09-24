@@ -4,7 +4,8 @@ slint::include_modules!();
 
 /// Re-exported so entry-point crates need no direct Slint dependency.
 pub use slint::PlatformError;
-
+#[cfg(target_os = "android")]
+pub use slint::android;
 
 
 pub struct RootViewModel {

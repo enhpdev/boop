@@ -7,5 +7,8 @@ edition = "2024"
 boop-common.workspace = true
 slint.workspace = true
 
+[target.'cfg(target_os = "android")'.dependencies]
+slint = { workspace = true, features = ["backend-android-activity-06"] }
+
 [build-dependencies]
 slint-build.workspace = true
