@@ -5,27 +5,38 @@ export component AppWindow inherits Window {
     in property <string> fizzbuzz: "";
     callback increment;
     callback decrement;
-    VerticalBox {
+
+    VerticalLayout {
+        padding: 20px;
+        alignment: center;
+        spacing: 20px;
+        
         Text {
             text: "Hello World!";
         }
-        Text {
-            text: fizzbuzz;
-        }
+
         Text {
             text: "Counter: \{root.counter}";
         }
 
-        Button {
-            text: "+";
-            clicked => {
-                root.increment();
-            }
+        Text {
+            text: fizzbuzz;
         }
-        Button {
-            text: "-";
-            clicked => {
-                root.decrement();
+
+        HorizontalLayout {
+            padding: 20px;
+            spacing: 20px;
+            Button {
+                text: "+";
+                clicked => {
+                    root.increment();
+                }
+            }
+            Button {
+                text: "-";
+                clicked => {
+                    root.decrement();
+                }
             }
         }
     }
